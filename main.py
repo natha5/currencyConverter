@@ -17,7 +17,6 @@ class Application(Frame):
 
     def create_widgets(self):
 
-
         # label for input currency drop down
         self.lbl_initCurrency = Label(self, text="Initial currency")
         self.lbl_initCurrency.grid(row=0, column=0, columnspan=1, sticky=W)
@@ -50,8 +49,19 @@ class Application(Frame):
         self.lbl_outputAmount = Label(self, text = "result")
         self.lbl_outputAmount.grid(row = 1, column = 4, sticky = W)
 
-        self.bttn_convert = Button(self, text='Submit')
+        # submit button
+        self.bttn_convert = Button(self, text='Submit', command = self.convert)
         self.bttn_convert.grid(row=2, column=0, sticky=W)
+
+    def convert(self):
+        #inputCurrency = self.opm_initAmount.get()
+        #outputCurrency = self.opm_outputAmount.get()
+
+        inputAmount = self.ent_initAmount.get()
+
+        print( inputAmount)
+
+
 
 
 root = Tk()
