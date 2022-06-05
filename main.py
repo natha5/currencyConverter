@@ -31,7 +31,7 @@ class Application(Frame):
 
         # drop down to select input currency
         self.opm_inputCurrency = OptionMenu(self, self.option_var, self.currencyOptions, *self.currencyOptions)
-        self.opm_inputCurrency.grid(row=1, column=0, sticky=W)
+        self.opm_inputCurrency.grid(row=1, column=0, sticky=E)
 
         # entry box for inital amount
         self.ent_initAmount = Entry(self)
@@ -39,15 +39,15 @@ class Application(Frame):
 
         # equals sign to separate input and output visually
         self.lbl_equals = Label(self, text = "=")
-        self.lbl_equals.grid(row=1, column = 2, columnspan= 3, sticky = W)
+        self.lbl_equals.grid(row=1, column = 2, sticky = W)
 
         # drop down to select output currency
         self.opm_outputCurrency = OptionMenu(self, self.option_var, self.currencyOptions, *self.currencyOptions)
-        self.opm_outputCurrency.grid(row=1, column=3, sticky=W)
+        self.opm_outputCurrency.grid(row=1, column=3, sticky=E)
 
         # result label
-        self.lbl_outputAmount = Label(self, text = "result")
-        self.lbl_outputAmount.grid(row = 1, column = 4, sticky = W)
+        self.txt_outputAmount = Text(self, width = 5, height = 1, wrap= NONE)
+        self.txt_outputAmount.grid(row = 1, column = 4, sticky = W)
 
         # submit button
         self.bttn_convert = Button(self, text='Submit', command = self.convert)
@@ -58,8 +58,10 @@ class Application(Frame):
         #outputCurrency = self.opm_outputAmount.get()
 
         inputAmount = self.ent_initAmount.get()
+        self.txt_outputAmount.delete(0.0, END)
+        self.txt_outputAmount.insert(0.0, inputAmount)
 
-        print( inputAmount)
+        print(inputAmount)
 
 
 
