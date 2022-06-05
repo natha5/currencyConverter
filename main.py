@@ -99,7 +99,6 @@ class Application(Frame):
 
     def convert(self):
 
-
         inputAmount = self.ent_initAmount.get()
 
 
