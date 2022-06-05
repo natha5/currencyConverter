@@ -1,6 +1,18 @@
 import tkinter as tk
 from tkinter import *
-from requests import *
+import requests
+from requests.structures import CaseInsensitiveDict
+
+
+url = "https://api.freecurrencyapi.com/v1/latest"
+
+headers = CaseInsensitiveDict()
+headers["apikey"] = "9QGTXHu0cUEOrWHFFSQBTjkf7tq36kzL4SUNyEYR"
+
+resp = requests.get(url, headers=headers)
+
+print(resp.status_code)
+
 
 
 class Application(Frame):
@@ -8,11 +20,44 @@ class Application(Frame):
         super(Application, self).__init__(master)
         self.grid()
         self.currencyOptions = [
-            "£",
-            "$",
-            "€"
+            "AUD",
+            "BGN",
+            "BRL",
+            "CAD",
+            "CNY",
+            "CZK",
+            "DKK",
+            "EUR",
+
+            "GBP",
+            "HUF",
+            "PLN",
+            "RON",
+            "SEK",
+            "CHF",
+            "ISK",
+            "NOK",
+            "HRK",
+            "RUB",
+            "TRY",
+
+            "HKD",
+            "IDR",
+            "ILS",
+            "INR",
+            "KRW",
+            "MXN",
+            "MYR",
+            "NZD",
+            "PHP",
+            "SGD",
+            "THB",
+            "USD",
+            "JPY",
+            "ZAR"
         ]
-        self.option_var = tk.StringVar(self)
+        self.inputCurrency = tk.StringVar(self)
+        self.outputCurrency = tk.StringVar(self)
 
         self.create_widgets()
 
@@ -31,7 +76,7 @@ class Application(Frame):
         self.lbl_outputCurrency.grid(row=0, column=3, columnspan=1, sticky=W)
 
         # drop down to select input currency
-        self.opm_inputCurrency = OptionMenu(self, self.option_var, self.currencyOptions, *self.currencyOptions)
+        self.opm_inputCurrency = OptionMenu(self, self.inputCurrency, self.currencyOptions, *self.currencyOptions)
         self.opm_inputCurrency.grid(row=1, column=0, sticky=E)
 
         # entry box for inital amount
@@ -43,7 +88,7 @@ class Application(Frame):
         self.lbl_equals.grid(row=1, column = 2, sticky = W)
 
         # drop down to select output currency
-        self.opm_outputCurrency = OptionMenu(self, self.option_var, self.currencyOptions, *self.currencyOptions)
+        self.opm_outputCurrency = OptionMenu(self, self.outputCurrency, self.currencyOptions, *self.currencyOptions)
         self.opm_outputCurrency.grid(row=1, column=3, sticky=E)
 
         # result label
@@ -55,10 +100,17 @@ class Application(Frame):
         self.bttn_convert.grid(row=2, column=0, sticky=W)
 
     def convert(self):
-        #inputCurrency = self.opm_initAmount.get()
-        #outputCurrency = self.opm_outputAmount.get()
+
 
         inputAmount = self.ent_initAmount.get()
+
+
+        # use input currency as base, request output currency
+        requestURL = "https://api.freecurrencyapi.com/v1/latest?apikey=9QGTXHu0cUEOrWHFFSQBTjkf7tq36kzL4SUNyEYR&currencies=" + self.outputCurrency + "&base_currency=" + self.inputCurrency"
+
+        exchangeResp = requests.get(requestURL, headers=headers)
+
+
         self.txt_outputAmount.delete(0.0, END)
         self.txt_outputAmount.insert(0.0, inputAmount)
 
