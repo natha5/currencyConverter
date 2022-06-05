@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import *
+from requests import *
 
 
 class Application(Frame):
