@@ -13,6 +13,8 @@ resp = requests.get(url, headers=headers)
 
 print(resp.status_code)
 
+passoutputcurrency = ""
+passinputcurrency = ""
 
 
 class Application(Frame):
@@ -101,12 +103,12 @@ class Application(Frame):
 
         inputAmount = self.ent_initAmount.get()
 
-
         # use input currency as base, request output currency
-        requestURL = "https://api.freecurrencyapi.com/v1/latest?apikey=9QGTXHu0cUEOrWHFFSQBTjkf7tq36kzL4SUNyEYR&currencies=" + self.outputCurrency + "&base_currency=" + self.inputCurrency"
+        passinputcurrency = self.inputCurrency
+        passoutputcurrency = self.outputCurrency
+        requesturl = "https://api.freecurrencyapi.com/v1/latest?apikey=9QGTXHu0cUEOrWHFFSQBTjkf7tq36kzL4SUNyEYR&currencies=" + passoutputcurrency + "&base_currency=" + passinputcurrency
 
-        exchangeResp = requests.get(requestURL, headers=headers)
-
+        exchangeresp = requests.get(requesturl, headers=headers)
 
         self.txt_outputAmount.delete(0.0, END)
         self.txt_outputAmount.insert(0.0, inputAmount)
