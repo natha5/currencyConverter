@@ -4,6 +4,8 @@ from tkinter import *
 import requests
 from requests.structures import CaseInsensitiveDict
 
+url = "https://api.freecurrencyapi.com/v1/latest?apikey=9QGTXHu0cUEOrWHFFSQBTjkf7tq36kzL4SUNyEYR"
+
 headers = CaseInsensitiveDict()
 
 
@@ -60,7 +62,7 @@ class Application(Frame):
         self.opm_output_currency = OptionMenu(self, self.output_currency, self.currencyOptions, *self.currencyOptions)
         self.txt_output_amount = Text(self, width=5, height=1, wrap=NONE)
         self.txt_exchange_rate = Text(self, width=5, height=1, wrap=NONE)
-        self.bttn_convert = Button(self, text='Submit', command=self.convert)
+        self.button_convert = Button(self, text='Submit', command=self.convert)
 
         self.create_widgets()
 
@@ -73,13 +75,13 @@ class Application(Frame):
 
         self.opm_input_currency.grid(row=1, column=0, sticky=E)
         self.ent_initial_amount.grid(row=1, column=1, sticky=W)
-        self.lbl_equals.grid(row=1, column = 2, sticky = W)
+        self.lbl_equals.grid(row=1, column=2, sticky=W)
         self.opm_output_currency.grid(row=1, column=3, sticky=E)
-        self.txt_output_amount.grid(row = 1, column = 4, sticky = W)
-        self.txt_exchange_rate.grid(row = 1, column = 5, sticky = W)
-        self.bttn_convert.grid(row=2, column=0, sticky=W)
+        self.txt_output_amount.grid(row=1, column=4, sticky=W)
+        self.txt_exchange_rate.grid(row=1, column=5, sticky=W)
+        self.button_convert.grid(row=2, column=0, sticky=W)
 
-        self.txt_exchange_rate.config(state ='disabled')
+        self.txt_exchange_rate.config(state='disabled')
         self.txt_output_amount.config(state='disabled')
 
     def convert(self):
@@ -89,7 +91,7 @@ class Application(Frame):
         pass_input_currency = self.input_currency.get()
         pass_output_currency = self.output_currency.get()
         requesturl = \
-            "https://api.freecurrencyapi.com/v1/latest?apikey=9QGTXHu0cUEOrWHFFSQBTjkf7tq36kzL4SUNyEYR&currencies=" + pass_output_currency + "&base_currency=" + pass_input_currency
+            url + "&currencies=" + pass_output_currency + "&base_currency=" + pass_input_currency
 
         exchange_resp = requests.get(requesturl, headers=headers)
 
@@ -114,10 +116,6 @@ class Application(Frame):
         self.txt_output_amount.config(state='normal')
         self.txt_output_amount.insert('end', output_amount)
         self.txt_output_amount.config(state='disabled')
-
-
-
-
 
 
 root = Tk()
