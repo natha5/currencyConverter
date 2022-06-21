@@ -63,18 +63,23 @@ class Application(Frame):
         self.create_widgets()
 
     def create_widgets(self):
+        ### labels
 
         # label for input currency drop down
-        self.lbl_initCurrency = Label(self, text="Initial currency")
+        self.lbl_initCurrency = Label(self, text="Initial currency:")
         self.lbl_initCurrency.grid(row=0, column=0, columnspan=1, sticky=W)
 
         # label for input amount entry
-        self.lbl_initAmount = Label(self, text="Input amount")
+        self.lbl_initAmount = Label(self, text="Input amount:")
         self.lbl_initAmount.grid(row=0, column=1, columnspan=1, sticky=W)
 
         # label for output currency drop down
-        self.lbl_outputCurrency = Label(self, text="Output currency")
+        self.lbl_outputCurrency = Label(self, text="Output currency:")
         self.lbl_outputCurrency.grid(row=0, column=3, columnspan=1, sticky=W)
+
+        # label for exchange rate
+        self.lbl_exchangeRate = Label(self, text="Exchange rate:")
+        self.lbl_exchangeRate.grid(row=0, column=5, columnspan=1, sticky=W)
 
         # drop down to select input currency
         self.opm_inputCurrency = OptionMenu(self, self.inputCurrency, self.currencyOptions, *self.currencyOptions)
@@ -96,6 +101,11 @@ class Application(Frame):
         self.txt_outputAmount = Text(self, width = 5, height = 1, wrap= NONE)
         self.txt_outputAmount.grid(row = 1, column = 4, sticky = W)
         self.txt_outputAmount.config(state = 'disabled')
+
+        # exchange rate text box
+        self.txt_exchangeRate = Text(self, width = 5, height = 1, wrap= NONE)
+        self.txt_exchangeRate.grid(row = 1, column = 5, sticky = W)
+        self.txt_exchangeRate.config(state = 'disabled')
 
         # submit button
         self.bttn_convert = Button(self, text='Submit', command = self.convert)
@@ -125,9 +135,16 @@ class Application(Frame):
         print(inputAmount)
         print(exchange_rate)
         print(outputAmount)
+
+        self.txt_exchangeRate.config(state = 'normal')
+        self.txt_exchangeRate.insert('end', actual_exchange_rate)
+        self.txt_exchangeRate.config(state = 'disabled')
+
         self.txt_outputAmount.config(state = 'normal')
         self.txt_outputAmount.insert('end', outputAmount)
         self.txt_outputAmount.config(state='disabled')
+
+
 
 
 
