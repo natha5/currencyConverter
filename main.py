@@ -4,7 +4,7 @@ from tkinter import *
 import requests
 from requests.structures import CaseInsensitiveDict
 
-url = "https://api.freecurrencyapi.com/v1/latest?apikey=9QGTXHu0cUEOrWHFFSQBTjkf7tq36kzL4SUNyEYR"
+base_url = "https://api.freecurrencyapi.com/v1/latest?apikey=9QGTXHu0cUEOrWHFFSQBTjkf7tq36kzL4SUNyEYR"
 
 headers = CaseInsensitiveDict()
 
@@ -91,7 +91,7 @@ class Application(Frame):
         pass_input_currency = self.input_currency.get()
         pass_output_currency = self.output_currency.get()
         requesturl = \
-            url + "&currencies=" + pass_output_currency + "&base_currency=" + pass_input_currency
+            base_url + "&currencies=" + pass_output_currency + "&base_currency=" + pass_input_currency
 
         exchange_resp = requests.get(requesturl, headers=headers)
 
