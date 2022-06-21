@@ -1,21 +1,10 @@
 import tkinter as tk
 from tkinter import *
+
 import requests
 from requests.structures import CaseInsensitiveDict
-import json
-
-
-url = "https://api.freecurrencyapi.com/v1/latest"
 
 headers = CaseInsensitiveDict()
-headers["apikey"] = "9QGTXHu0cUEOrWHFFSQBTjkf7tq36kzL4SUNyEYR"
-
-resp = requests.get(url, headers=headers)
-
-print(resp.status_code)
-
-passoutputcurrency = ""
-passinputcurrency = ""
 
 
 class Application(Frame):
@@ -57,92 +46,74 @@ class Application(Frame):
             "USD",
             "ZAR"
         ]
-        self.inputCurrency = tk.StringVar(self)
-        self.outputCurrency = tk.StringVar(self)
+        self.input_currency = tk.StringVar(self)
+        self.output_currency = tk.StringVar(self)
+
+        self.lbl_initial_currency = Label(self, text="Initial currency:")
+        self.lbl_initial_amount = Label(self, text="Input amount:")
+        self.lbl_output_currency = Label(self, text="Output currency:")
+        self.lbl_exchange_rate = Label(self, text="Exchange rate:")
+
+        self.opm_input_currency = OptionMenu(self, self.input_currency, self.currencyOptions, *self.currencyOptions)
+        self.ent_initial_amount = Entry(self)
+        self.lbl_equals = Label(self, text="=")
+        self.opm_output_currency = OptionMenu(self, self.output_currency, self.currencyOptions, *self.currencyOptions)
+        self.txt_output_amount = Text(self, width=5, height=1, wrap=NONE)
+        self.txt_exchange_rate = Text(self, width=5, height=1, wrap=NONE)
+        self.bttn_convert = Button(self, text='Submit', command=self.convert)
 
         self.create_widgets()
 
     def create_widgets(self):
-        ### labels
 
-        # label for input currency drop down
-        self.lbl_initCurrency = Label(self, text="Initial currency:")
-        self.lbl_initCurrency.grid(row=0, column=0, columnspan=1, sticky=W)
+        self.lbl_initial_currency.grid(row=0, column=0, columnspan=1, sticky=W)
+        self.lbl_initial_amount.grid(row=0, column=1, columnspan=1, sticky=W)
+        self.lbl_output_currency.grid(row=0, column=3, columnspan=1, sticky=W)
+        self.lbl_exchange_rate.grid(row=0, column=5, columnspan=1, sticky=W)
 
-        # label for input amount entry
-        self.lbl_initAmount = Label(self, text="Input amount:")
-        self.lbl_initAmount.grid(row=0, column=1, columnspan=1, sticky=W)
-
-        # label for output currency drop down
-        self.lbl_outputCurrency = Label(self, text="Output currency:")
-        self.lbl_outputCurrency.grid(row=0, column=3, columnspan=1, sticky=W)
-
-        # label for exchange rate
-        self.lbl_exchangeRate = Label(self, text="Exchange rate:")
-        self.lbl_exchangeRate.grid(row=0, column=5, columnspan=1, sticky=W)
-
-        # drop down to select input currency
-        self.opm_inputCurrency = OptionMenu(self, self.inputCurrency, self.currencyOptions, *self.currencyOptions)
-        self.opm_inputCurrency.grid(row=1, column=0, sticky=E)
-
-        # entry box for inital amount
-        self.ent_initAmount = Entry(self)
-        self.ent_initAmount.grid(row=1, column=1, sticky=W)
-
-        # equals sign to separate input and output visually
-        self.lbl_equals = Label(self, text = "=")
+        self.opm_input_currency.grid(row=1, column=0, sticky=E)
+        self.ent_initial_amount.grid(row=1, column=1, sticky=W)
         self.lbl_equals.grid(row=1, column = 2, sticky = W)
-
-        # drop down to select output currency
-        self.opm_outputCurrency = OptionMenu(self, self.outputCurrency, self.currencyOptions, *self.currencyOptions)
-        self.opm_outputCurrency.grid(row=1, column=3, sticky=E)
-
-        # result text box
-        self.txt_outputAmount = Text(self, width = 5, height = 1, wrap= NONE)
-        self.txt_outputAmount.grid(row = 1, column = 4, sticky = W)
-        self.txt_outputAmount.config(state = 'disabled')
-
-        # exchange rate text box
-        self.txt_exchangeRate = Text(self, width = 5, height = 1, wrap= NONE)
-        self.txt_exchangeRate.grid(row = 1, column = 5, sticky = W)
-        self.txt_exchangeRate.config(state = 'disabled')
-
-        # submit button
-        self.bttn_convert = Button(self, text='Submit', command = self.convert)
+        self.opm_output_currency.grid(row=1, column=3, sticky=E)
+        self.txt_output_amount.grid(row = 1, column = 4, sticky = W)
+        self.txt_exchange_rate.grid(row = 1, column = 5, sticky = W)
         self.bttn_convert.grid(row=2, column=0, sticky=W)
 
+        self.txt_exchange_rate.config(state ='disabled')
+        self.txt_output_amount.config(state='disabled')
+
     def convert(self):
-        inputAmount = self.ent_initAmount.get()
+        input_amount = self.ent_initial_amount.get()
 
         # use input currency as base, request output currency
-        passinputcurrency = self.inputCurrency.get()
-        passoutputcurrency = self.outputCurrency.get()
-        requesturl = "https://api.freecurrencyapi.com/v1/latest?apikey=9QGTXHu0cUEOrWHFFSQBTjkf7tq36kzL4SUNyEYR&currencies=" + passoutputcurrency + "&base_currency=" + passinputcurrency
+        pass_input_currency = self.input_currency.get()
+        pass_output_currency = self.output_currency.get()
+        requesturl = \
+            "https://api.freecurrencyapi.com/v1/latest?apikey=9QGTXHu0cUEOrWHFFSQBTjkf7tq36kzL4SUNyEYR&currencies=" + pass_output_currency + "&base_currency=" + pass_input_currency
 
-        exchangeresp = requests.get(requesturl, headers=headers)
+        exchange_resp = requests.get(requesturl, headers=headers)
 
-        self.txt_outputAmount.delete(0.0, END)
+        self.txt_output_amount.delete(0.0, END)
 
-
-        response_data = exchangeresp.json()
+        response_data = exchange_resp.json()
 
         exchange_rate = response_data["data"]
-        actual_exchange_rate = exchange_rate.get(passoutputcurrency)
+        actual_exchange_rate = exchange_rate.get(pass_output_currency)
 
-        floatInput = float(inputAmount)
-        outputAmount = floatInput * actual_exchange_rate
+        float_input = float(input_amount)
+        output_amount = float_input * actual_exchange_rate
 
-        print(inputAmount)
+        print(input_amount)
         print(exchange_rate)
-        print(outputAmount)
+        print(output_amount)
 
-        self.txt_exchangeRate.config(state = 'normal')
-        self.txt_exchangeRate.insert('end', actual_exchange_rate)
-        self.txt_exchangeRate.config(state = 'disabled')
+        self.txt_exchange_rate.config(state='normal')
+        self.txt_exchange_rate.insert('end', actual_exchange_rate)
+        self.txt_exchange_rate.config(state='disabled')
 
-        self.txt_outputAmount.config(state = 'normal')
-        self.txt_outputAmount.insert('end', outputAmount)
-        self.txt_outputAmount.config(state='disabled')
+        self.txt_output_amount.config(state='normal')
+        self.txt_output_amount.insert('end', output_amount)
+        self.txt_output_amount.config(state='disabled')
 
 
 
