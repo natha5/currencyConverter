@@ -100,7 +100,6 @@ class Application(Frame):
         self.bttn_convert.grid(row=2, column=0, sticky=W)
 
     def convert(self):
-
         inputAmount = self.ent_initAmount.get()
 
         # use input currency as base, request output currency
@@ -114,8 +113,6 @@ class Application(Frame):
         self.txt_outputAmount.insert(0.0, inputAmount)
 
         print(inputAmount)
-
-
 
 
 root = Tk()
