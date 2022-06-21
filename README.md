@@ -10,3 +10,6 @@ Libraries used:
 - Tkinter - for UI building tools
 - Requests - for API request handling
 - JSON - for JSON handling
+
+Todo:
+- Fix changing value and making another request
