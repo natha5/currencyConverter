@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import *
 import requests
 from requests.structures import CaseInsensitiveDict
+import json
 
 
 url = "https://api.freecurrencyapi.com/v1/latest"
@@ -103,16 +104,30 @@ class Application(Frame):
         inputAmount = self.ent_initAmount.get()
 
         # use input currency as base, request output currency
-        passinputcurrency = self.inputCurrency
-        passoutputcurrency = self.outputCurrency
+        passinputcurrency = self.inputCurrency.get()
+        passoutputcurrency = self.outputCurrency.get()
         requesturl = "https://api.freecurrencyapi.com/v1/latest?apikey=9QGTXHu0cUEOrWHFFSQBTjkf7tq36kzL4SUNyEYR&currencies=" + passoutputcurrency + "&base_currency=" + passinputcurrency
 
         exchangeresp = requests.get(requesturl, headers=headers)
 
         self.txt_outputAmount.delete(0.0, END)
-        self.txt_outputAmount.insert(0.0, inputAmount)
+
+
+        response_data = exchangeresp.json()
+
+        exchange_rate = response_data["data"]
+        actual_exchange_rate = exchange_rate.get(passoutputcurrency)
+
+        floatInput = float(inputAmount)
+        outputAmount = floatInput * actual_exchange_rate
 
         print(inputAmount)
+        print(exchange_rate)
+        print(outputAmount)
+
+
+
+
 
 
 root = Tk()
