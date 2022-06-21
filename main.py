@@ -92,9 +92,10 @@ class Application(Frame):
         self.opm_outputCurrency = OptionMenu(self, self.outputCurrency, self.currencyOptions, *self.currencyOptions)
         self.opm_outputCurrency.grid(row=1, column=3, sticky=E)
 
-        # result label
+        # result text box
         self.txt_outputAmount = Text(self, width = 5, height = 1, wrap= NONE)
         self.txt_outputAmount.grid(row = 1, column = 4, sticky = W)
+        self.txt_outputAmount.config(state = 'disabled')
 
         # submit button
         self.bttn_convert = Button(self, text='Submit', command = self.convert)
@@ -124,8 +125,9 @@ class Application(Frame):
         print(inputAmount)
         print(exchange_rate)
         print(outputAmount)
-
-
+        self.txt_outputAmount.config(state = 'normal')
+        self.txt_outputAmount.insert('end', outputAmount)
+        self.txt_outputAmount.config(state='disabled')
 
 
 
